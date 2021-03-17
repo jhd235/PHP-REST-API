@@ -35,7 +35,7 @@ class ConnectDb {
         return $this->conn;
     }
 
-    function createdbtable($table,$fields)
+    public function createdbtable($table,$fields)
     {
         $conn = $this->getConnection();
         $sql = "CREATE TABLE IF NOT EXISTS `$table` (";
@@ -59,6 +59,76 @@ class ConnectDb {
             }
         }
         $sql .= ") CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci";
-        if($conn->exec($sql) !== false) { return 1; }
+        if($conn->exec($sql) !== false) { return ; }
     }
+
+    private function statusToTinyInt($str){
+        switch ($str){
+            case "On": return 1;
+            case "Off": return 0;
+        }
+    }
+
+    public function fillTable($values){
+        if ($this->isTableFilled() != 0) {
+            exit("Table contains data");
+        }
+        try {
+            $conn = $this->getConnection($values);
+            // set the PDO error mode to exception
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // prepare sql and bind parameters
+            $stmt = $conn->prepare("INSERT INTO `table` (`nazvanie-aktsii`, `data-nachala-aktsii`, `data-okonchaniya`, `status`)
+  VALUES (:nazvanieAktsii, :dataNachalaAktsii, :dataOkonchaniya, :status)");
+            $stmt->bindParam(':nazvanieAktsii', $nazvanieAktsii);
+            $stmt->bindParam(':dataNachalaAktsii', $dataNachalaAktsii);
+            $stmt->bindParam(':dataOkonchaniya', $dataOkonchaniya);
+            $stmt->bindParam(':status', $status);
+
+            // insert a row
+            for ($i = 0; $i < count($values); $i++){
+
+                    $nazvanieAktsii = $values[$i][1];
+                    $dataNachalaAktsii = strtotime($values[$i][2]);
+                    $dataOkonchaniya = strtotime($values[$i][3]);
+                    $status = $this->statusToTinyInt($values[$i][4]);
+                    $stmt->execute();
+            }
+
+
+            echo "New records created successfully";
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
+    return 1;
+
+    }
+
+    private function inverter($int){
+        switch ($int){
+            case 0: return 1;
+            case 1: return 0;
+        }
+    }
+
+    public function randomStatus(){
+        $conn = $this->getConnection();
+        $sql = "select `id-aktsii` from `table`";
+        $ids = $conn->query($sql)->fetchAll();
+        $rid = array_rand($ids, 1);
+
+        $this->inverter();
+
+        $sql = "UPDATE `table` SET status= WHERE id=2";
+        return
+    }
+
+    public function isTableFilled(){
+        $conn = $this->getConnection();
+        $sql = "select count(`id-aktsii`) from `table`";
+        return $conn->query($sql)->fetchColumn();
+    }
+
 }

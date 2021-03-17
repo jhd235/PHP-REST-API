@@ -25,17 +25,17 @@ $data = [];
 
 $data = $loaderCSV->parseCSV($fileName);
 $fields = $data[0];
-print_r($fields);
+//print_r($fields);
 for ($i = 0; $i < count($fields); $i++){
     $fields[$i] = $translit->tran($fields[$i]);
 }
-print "<br>";
-print_r($fields);
+//print "<br>";
+//print_r($fields);
 
 $string = "ЫЕ ,. +";
 $tran = $translit->tran($string);
-print "<br>";
-print_r($tran);
+//print "<br>";
+//print_r($tran);
 
 
 
@@ -43,3 +43,12 @@ $instance = ConnectDb::getInstance();
 $conn = $instance->getConnection();
 print "<br>";
 print $instance->createdbtable($tableName, $fields);
+
+array_shift($data);
+print_r($instance->randomStatus());
+print "<br>";
+print_r($instance->fillTable($data));
+/*print "<br>";
+print $instance->isTableFilled();*/
+
+
