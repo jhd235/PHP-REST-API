@@ -9,9 +9,12 @@ class ConnectDb
     private $conn;
 
     private $host = 'localhost';
+    //private $host = 'srv-pleskdb34.ps.kz:3306';
     private $user = 'rest';
+    //private $user = 'skykz124_rest';
     private $pass = '2XoYYz5E^6k0';
     private $name = 'rest';
+    //private $name = 'skykz124_rest';
 
     // The db connection is established in the private constructor.
     private function __construct()

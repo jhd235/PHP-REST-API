@@ -7,6 +7,9 @@
 //import data into table
 //TODO REST web service url idDiscount nameDiscount
 //web service classes
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 function my_autoloader($class) {
     include 'classes/' . $class . '.php';
@@ -36,4 +39,6 @@ if ($instance->isTableFilled() == 0) {
 
 print_r($instance->randomStatus());
 
-$loaderCSV->getLinks($fileName);
+//$loaderCSV->getLinks($fileName);
+header('Content-type: application/json');
+print $loaderCSV->getLinksJSON($fileName);
