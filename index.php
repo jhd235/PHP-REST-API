@@ -40,5 +40,6 @@ if ($instance->isTableFilled() == 0) {
 print_r($instance->randomStatus());
 
 //$loaderCSV->getLinks($fileName);
+print "\n\n";
 header('Content-type: application/json');
 print $loaderCSV->getLinksJSON($fileName);

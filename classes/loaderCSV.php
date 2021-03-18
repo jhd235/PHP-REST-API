@@ -55,7 +55,10 @@ class loaderCSV
             //print "<a href= #>";
             //print "https://webSiteName.org/?discountName=";print_r($res[$m][1]);print "&page=";print_r($res[$m][0]);
             //print "</a>";print "<br>";
-            $arr[$m] = $res[$m][1];
+            $arr[$m] = array(
+                "name" => $res[$m][1],
+                "id" => $res[$m][0]
+        );
         }
     return json_encode($arr);
     }
